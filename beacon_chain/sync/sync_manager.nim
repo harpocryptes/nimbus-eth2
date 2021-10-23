@@ -119,7 +119,7 @@ proc newSyncManager*[A, B](pool: PeerPool[A, B],
                            getFrontfillSlotCb: GetSlotCallback,
                            progressPivot: Slot,
                            blockVerifier: BlockVerifier,
-                           maxHeadAge = uint64(SLOTS_PER_EPOCH * 1),
+                           maxHeadAge = 8'u64,
                            chunkSize = uint64(SLOTS_PER_EPOCH),
                            flags: set[SyncManagerFlag] = {},
                            ident = "main"
