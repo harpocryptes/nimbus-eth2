@@ -451,6 +451,9 @@ proc getPayload*(p: Eth1Monitor,
                  payloadId: bellatrix.PayloadID): Future[engine_api.ExecutionPayloadV1] =
   # Eth1 monitor can recycle connections without (external) warning; at least,
   # don't crash.
+  if p.isNil:
+    warn "getPayload: nil Eth1Monitor; returning empty ExecutionPayload"
+
   if p.isNil or p.dataProvider.isNil:
     var epr: Future[engine_api.ExecutionPayloadV1]
     epr.complete(default(engine_api.ExecutionPayloadV1))
@@ -474,6 +477,9 @@ proc forkchoiceUpdated*(p: Eth1Monitor,
                         Future[engine_api.ForkchoiceUpdatedResponse] =
   # Eth1 monitor can recycle connections without (external) warning; at least,
   # don't crash.
+  if p.isNil:
+    warn "forkchoiceUpdated: nil Eth1Monitor; returning syncing"
+
   if p.isNil or p.dataProvider.isNil:
     var fcuR: Future[engine_api.ForkchoiceUpdatedResponse]
     fcuR.complete(engine_api.ForkchoiceUpdatedResponse(
@@ -500,6 +506,9 @@ proc forkchoiceUpdated*(p: Eth1Monitor,
                         Future[engine_api.ForkchoiceUpdatedResponse] =
   # Eth1 monitor can recycle connections without (external) warning; at least,
   # don't crash.
+  if p.isNil:
+    warn "forkchoiceUpdated: nil Eth1Monitor; returning syncing"
+
   if p.isNil or p.dataProvider.isNil:
     var fcuR: Future[engine_api.ForkchoiceUpdatedResponse]
     fcuR.complete(engine_api.ForkchoiceUpdatedResponse(
