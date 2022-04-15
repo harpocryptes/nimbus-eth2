@@ -451,7 +451,7 @@ proc getPayload*(p: Eth1Monitor,
                  payloadId: bellatrix.PayloadID): Future[engine_api.ExecutionPayloadV1] =
   # Eth1 monitor can recycle connections without (external) warning; at least,
   # don't crash.
-  if p.dataProvider.isNil:
+  if p.isNil or p.dataProvider.isNil:
     var epr: Future[engine_api.ExecutionPayloadV1]
     epr.complete(default(engine_api.ExecutionPayloadV1))
     return epr
@@ -474,7 +474,7 @@ proc forkchoiceUpdated*(p: Eth1Monitor,
                         Future[engine_api.ForkchoiceUpdatedResponse] =
   # Eth1 monitor can recycle connections without (external) warning; at least,
   # don't crash.
-  if p.dataProvider.isNil:
+  if p.isNil or p.dataProvider.isNil:
     var fcuR: Future[engine_api.ForkchoiceUpdatedResponse]
     fcuR.complete(engine_api.ForkchoiceUpdatedResponse(
       payloadStatus: PayloadStatusV1(status: PayloadExecutionStatus.syncing)))
@@ -500,7 +500,7 @@ proc forkchoiceUpdated*(p: Eth1Monitor,
                         Future[engine_api.ForkchoiceUpdatedResponse] =
   # Eth1 monitor can recycle connections without (external) warning; at least,
   # don't crash.
-  if p.dataProvider.isNil:
+  if p.isNil or p.dataProvider.isNil:
     var fcuR: Future[engine_api.ForkchoiceUpdatedResponse]
     fcuR.complete(engine_api.ForkchoiceUpdatedResponse(
       payloadStatus: PayloadStatusV1(status: PayloadExecutionStatus.syncing)))
@@ -1030,7 +1030,7 @@ proc doStop(m: Eth1Monitor) {.async.} =
     m.dataProvider = nil
 
 proc ensureDataProvider*(m: Eth1Monitor) {.async.} =
-  if not m.dataProvider.isNil:
+  if m.isNil or not m.dataProvider.isNil:
     return
 
   let web3Url = m.web3Urls[m.startIdx mod m.web3Urls.len]
